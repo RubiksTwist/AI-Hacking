@@ -68,29 +68,13 @@ Chatbot created for a company called **Too Many Cables**, which sells HDMI cable
 
 ## What (Attack Surface)
 
-### Chatbot
-- User input fields accepting natural language queries
-- API endpoints processing chatbot requests
-- Authentication and session management
-- Integration points with backend systems
-
-### LLM Model
-- Training data that may contain sensitive information
-- Prompt processing and response generation logic
-- Model parameters and configuration
-- Fine-tuning data and update mechanisms
-
-### Database System
-- SQL queries executed by chatbot
-- Database authentication and access controls
-- Data stored in tables (customers, orders, products, suppliers)
-- Backup and recovery systems
-
-### E-commerce System
-- Web application frontend
-- Payment processing integrations
-- Third-party service connections (shipping, analytics)
-- Administrative interfaces and APIs
+- Input channels: any input prompts or files that are user-modifiable which are processed by the model
+- Retrieval / RAG layer: malicious documents or vector database poisoning (e.g., poisoned context returned to the model)
+- Tools / plugins: any tools, external services, or agent capabilities the model/agent can interact with
+- Supply chain: backdoored models, compromised dependencies, or malicious third-party components
+- Logging: application and model logs that may contain sensitive model details or PII
+- Admin / debug endpoints: interfaces that can expose system details, configuration, or keys if not properly secured
+- Training data: data used for pre-training or fine-tuning which could be poisoned or include sensitive information
 
 ---
 
