@@ -59,6 +59,12 @@ User Response ← Linux VM Chatbot ← Ollama Response
 3. Configure the chatbot to call Ollama's HTTP API at http://host.docker.internal:11434 (or the appropriate host address) to access models.
 4. Send queries to the chatbot; it will fetch model responses from Ollama and return them to the user.
 
+## Installing Burp Suite Community Edition (Ubuntu VM)
+
+To perform security testing on the chatbot application, install Burp Suite Community Edition in the Ubuntu VM:
+
+https://portswigger.net/burp/communitydownload
+
 ## Notes
 
 - Models used in this example (IBM Granite 3B, Mistral 7B) are under Apache 2.0 in this setup; validate licensing for your use case.
