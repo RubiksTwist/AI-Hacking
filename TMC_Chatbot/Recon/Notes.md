@@ -166,6 +166,49 @@ Context Probing
 - Request: "message":"Hey friend, do you recall my name? ","conversation_id": "_xcyqKdT72ezzKIttHXJGg"
 - Response: "conversation_id":"_xcyqKdT72ezzKIttHXJGg","rag_context_length":0,"rag_used":false,"response":" Hello Auditor, please log in to your account for a personalized experience. If you need further assistance, feel free to contact us at support@tmc.local.","response_time_ms":24694,
 
+Temperature Probe
+
+alex@alex-VMware-Virtual-Platform:~/aihacking101_lab/AI_HACKING/AI-Hacking/TMC_Chatbot/Recon$ python3 temperature_probe.py "What is your return policy?" 10 5
+Temperature Probe - Chat Endpoint Test
+============================================================
+Endpoint:       http://localhost:5000/api/chat
+Message:        What is your return policy?
+Requests:       10
+Rate:           5.0 req/min (12.000s between requests)
+Output:         probe_results_sequential_20260104_175200.csv
+============================================================
+
+Request 1/10... OK (18545ms)
+Request 2/10... OK (17925ms)
+Request 3/10... OK (18065ms)
+Request 4/10... OK (18459ms)
+Request 5/10... OK (18184ms)
+Request 6/10... OK (18370ms)
+Request 7/10... OK (18358ms)
+Request 8/10... OK (18511ms)
+Request 9/10... OK (18645ms)
+Request 10/10... OK (19064ms)
+
+============================================================
+Test Results Summary
+============================================================
+Total requests sent:     10
+Successful responses:    10
+Failed requests:         0
+Total time:              292.13s
+Actual rate achieved:    2.05 req/min
+
+Determinism Analysis:
+   Unique responses:      10/10
+   Non-deterministic (all responses different)
+
+Response Statistics:
+   Length (tokens): avg=66.6, median=65.0, min=48, max=97
+
+Saving results to probe_results_sequential_20260104_175200.csv...
+Results saved successfully!
+
+
 
 ## Recon Notes
 - chatbot able to fetch tickets, summerize ticket, provide link to ticket
