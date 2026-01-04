@@ -208,6 +208,37 @@ Response Statistics:
 Saving results to probe_results_sequential_20260104_175200.csv...
 Results saved successfully!
 
+-----------------------
+
+Rate Limiting
+
+alex@alex-VMware-Virtual-Platform:~/aihacking101_lab/AI_HACKING/AI-Hacking/TMC_Chatbot/Recon$ python3 rate_limit_tester.py 100 100
+Rate Limit Tester
+============================================================
+Endpoint:       http://localhost:5000/api/chat
+Message:        Hello
+Requests:       100
+Rate:           100.0 req/min (0.600s between requests)
+============================================================
+
+Launched 100 request threads...
+
+RATE LIMIT DETECTED at request 31 (after 18.01s)
+
+============================================================
+Test Results
+============================================================
+Total requests sent:     100
+Successful responses:    30
+Rate limited responses:  70
+Total time:              59.41s
+Average rate achieved:   101.00 req/min
+
+RATE LIMIT THRESHOLD DETECTED:
+   First rate limit at:  Request #31
+   Time to rate limit:   18.01s
+   Calculated threshold: ~103.28 req/min
+   Status code:          429
 
 
 ## Recon Notes
