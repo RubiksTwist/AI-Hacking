@@ -68,13 +68,13 @@ Chatbot created for a company called **Too Many Cables**, which sells HDMI cable
 
 ## What (Attack Surface)
 
-- Input channels: any input prompts or files that are user-modifiable which are processed by the model
-- Retrieval / RAG layer: malicious documents or vector database poisoning (e.g., poisoned context returned to the model)
-- Tools / plugins: any tools, external services, or agent capabilities the model/agent can interact with
-- Supply chain: backdoored models, compromised dependencies, or malicious third-party components
-- Logging: application and model logs that may contain sensitive model details or PII
-- Admin / debug endpoints: interfaces that can expose system details, configuration, or keys if not properly secured
-- Training data: data used for pre-training or fine-tuning which could be poisoned or include sensitive information
+- Input channels: any input prompts, uploaded files, or user-modifiable content processed by the model (user prompts, file attachments, or form inputs that can influence model behavior).
+- Retrieval / RAG layer: the retrieval-assisted generation layer and vector store — malicious documents, poisoned embeddings, or tampered context returned to the model that cause unsafe/incorrect outputs.
+- Tools / plugins: any external tools, plugins, or agent capabilities the model can call or interact with (e.g., code execution, HTTP/API calls, system commands).
+- Supply chain: backdoored or malicious models, compromised libraries, or third‑party dependencies introduced during model download, deployment, or updates.
+- Logging: application and model logs, telemetry, or audit trails that may contain sensitive prompts, PII, API keys, or details about model internals.
+- Admin / Debug endpoints: management, debug, or metrics endpoints that expose configuration, secrets, system internals, or allow privileged actions if not properly protected.
+- Training data: pre-training, fine-tuning, or augmentation data that could be poisoned or inadvertently include sensitive information that the model learns and can reveal.
 
 ---
 
