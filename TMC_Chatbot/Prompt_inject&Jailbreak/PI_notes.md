@@ -38,6 +38,8 @@ openAI API
 
 http://localhost:5000/admin/tickets?
 
+### Use Qwen LLM to judge injection sucess
+
 python3 ./Scripts/inspection_judge.py ./Results/results.csv -u http://192.168.0.6:11434/api/generate
 
 Processing 5/50: ID=3 Technique=Role Switching
