@@ -1,6 +1,6 @@
 # AI-Hacking
 
-This repository demonstrates a local AI chatbot setup that runs an Ollama server on a Windows host and a chatbot application inside a Linux VM (container). The chatbot communicates with Ollama via HTTP to fetch and use local models (e.g., IBM Granite 3B, Mistral 7B).
+This repository demonstrates a local AI chatbot setup that runs an Ollama server on a Windows host and a chatbot application inside a Docker Container within Ubuntu VM. The chatbot communicates with Ollama via HTTP to fetch and use local models (IBM Granite 3B, Mistral 7B for chatbot responses, and Qwen3 8B for classifying prompt injection results).
 
 ## Architecture
 
@@ -8,49 +8,67 @@ The following ASCII diagram shows the components and how they interact:
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                     HOST WINDOWS COMPUTER                        │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────┐    │
-│  │                    OLLAMA SERVER                        │    │
-│  │                                                         │    │
-│  │  ┌──────────────────┐      ┌──────────────────┐       │    │
-│  │  │  IBM Granite 3B  │      │   Mistral 7B     │       │    │
-│  │  │ (Apache 2.0)     │      │  (Apache 2.0)    │       │    │
-│  │  └──────────────────┘      └──────────────────┘       │    │
-│  │                                                         │    │
-│  │           Listening on: localhost:11434                │    │
-│  └────────────────────────────────────────────────────────┘    │
+│                     HOST WINDOWS COMPUTER                       │
+│                                                                 │
+│  ┌────────────────────────────────────────────────────────┐     │
+│  │                    OLLAMA SERVER                       │     │
+│  │                                                        │     │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌─────────────┐   │     │
+│  │  │IBM Granite 3B│  │  Mistral 7B  │  │  Qwen3 8B   │   │     │
+│  │  │(Apache 2.0)  │  │(Apache 2.0)  │  │(Apache 2.0) │   │     │
+│  │  └──────────────┘  └──────────────┘  └─────────────┘   │     │
+│  │                                                        │     │
+│  │  Granite/Mistral: Chatbot | Qwen3: Result Classifier   │     │
+│  │           Listening on: localhost:11434                │     │
+│  └────────────────────────────────────────────────────────┘     │
 │                              ▲                                  │
 │                              │                                  │
 │                              │ HTTP API Calls                   │
 │                              │                                  │
-│  ┌───────────────────────────┼──────────────────────────────┐  │
-│  │         LINUX VM          │                              │  │
-│  │                           │                              │  │
-│  │  ┌────────────────────────┼───────────────────────────┐ │  │
-│  │  │       Docker           │                           │ │  │
-│  │  │                        │                           │ │  │
-│  │  │  ┌─────────────────────▼────────────────────────┐ │ │  │
-│  │  │  │         AI CHATBOT APPLICATION              │ │ │  │
-│  │  │  │                                             │ │ │  │
-│  │  │  │  - Fetches models from Ollama              │ │ │  │
-│  │  │  │  - Processes user queries                  │ │ │  │
-│  │  │  │  - Returns AI responses                    │ │ │  │
-│  │  │  └─────────────────────────────────────────────┘ │ │  │
-│  │  │                                                   │ │  │
-│  │  └───────────────────────────────────────────────────┘ │  │
-│  └──────────────────────────────────────────────────────────┘  │
-│                                                                  │
+│  ┌───────────────────────────┼──────────────────────────────┐   │
+│  │     Linux Ubuntu VM       │                              │   │
+│  │                           │                              │   │
+│  │  ┌────────────────────────┼───────────────────────────┐  │   │
+│  │  │       Docker           │                           │  │   │
+│  │  │                        │                           │  │   │
+│  │  │  ┌─────────────────────▼────────────────────────┐  │  │   │
+│  │  │  │         AI CHATBOT APPLICATION               │  │  │   │
+│  │  │  │                                              │  │  │   │
+│  │  │  │  - Fetches models from Ollama                │  │  │   │
+│  │  │  │  - Processes user queries                    │  │  │   │
+│  │  │  │  - Returns AI responses                      │  │  │   │
+│  │  │  └──────────────────────────────────────────-───┘  │  │   │
+│  │  │                                                    │  │   │
+│  │  └────────────────────────────────────────────────────┘  │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
 ## Data flow
 
+**Chatbot Interaction:**
 User Query → Linux VM Chatbot → Ollama (Windows Host)
                                  ↓
                   Process with Granite 3B or Mistral 7B
                                  ↓
 User Response ← Linux VM Chatbot ← Ollama Response
+
+**Automated Prompt Injection Testing:**
+prompt_tester.py → Load prompts from Prompts/*.csv → Send to Chatbot
+                                                    ↓
+                              Collect responses → classification_judge.py
+                                                    ↓
+                              Ollama (Qwen3 8B) → Classify success/failure
+                                                    ↓
+                              Store results in Results/*.csv
+
+**Manual Prompt Injection Testing:**
+Burp Suite Repeater → Manual requests with conversation_id → Chatbot
+                                                            ↓
+                              Maintain session state for multi-turn attacks
+                                                            ↓
+                              Manual analysis and documentation in *_notes.md
 
 ## Getting started (high level)
 
@@ -67,7 +85,8 @@ https://portswigger.net/burp/communitydownload
 
 ## Notes
 
-- Models used in this example (IBM Granite 3B, Mistral 7B) are under Apache 2.0 in this setup; validate licensing for your use case.
+- Models used in this example (IBM Granite 3B, Mistral 7B, Qwen3 8B) are under Apache 2.0 in this setup; validate licensing for your use case.
+- Qwen3 8B is used specifically for automated classification of prompt injection test results via the classification_judge.py scripts.
 - Adjust host addressing depending on your VM/container networking (e.g., host.docker.internal, bridge, or mapped ports).
 
 ---
