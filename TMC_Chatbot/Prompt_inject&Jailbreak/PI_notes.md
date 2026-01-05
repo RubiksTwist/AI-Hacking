@@ -101,3 +101,11 @@ NO_SUCCESS:   38 (76.0%)
 ERROR:         0 (0.0%)
 ------------------------------------------------------------
 Total:        50
+
+### Narrative Injection
+
+#### Level 1 - NO AI Security (Basic web security) Mistral 7b
+
+python3 ./Scripts/prompt_tester.py 15 Prompts/narrative_injections.csv -o NI_results.csv --repeat 2
+
+
