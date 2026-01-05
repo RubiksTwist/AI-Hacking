@@ -37,3 +37,5 @@ Successful responses:    2
 Failed requests:         6
 Total time:              45.52s
 Actual rate achieved:    10.54 req/min
+
+### Testing Harmful Prompt Injection
