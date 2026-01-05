@@ -25,10 +25,10 @@ The following ASCII diagram shows the components and how they interact:
 │                              │ HTTP API Calls                   │
 │                              │                                  │
 │  ┌───────────────────────────┼──────────────────────────────┐  │
-│  │           DOCKER          │                              │  │
+│  │         LINUX VM          │                              │  │
 │  │                           │                              │  │
 │  │  ┌────────────────────────┼───────────────────────────┐ │  │
-│  │  │      LINUX VM          │                           │ │  │
+│  │  │       Docker           │                           │ │  │
 │  │  │                        │                           │ │  │
 │  │  │  ┌─────────────────────▼────────────────────────┐ │ │  │
 │  │  │  │         AI CHATBOT APPLICATION              │ │ │  │
